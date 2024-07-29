@@ -391,6 +391,11 @@ const deleteUser = async (id) => {
 
 <template>
   <h1>Tabla de datos</h1>
+  <div>
+    <h1>Datos de Usuario</h1>
+    <button @click="logout" class="btn btn-danger">Cerrar Sesión</button>
+    <!-- Resto del contenido -->
+  </div>
   <BtnGlobal btn_global="Agregar usuario" @click="add" class="btn btn-primary" />
   <div class="input-group mb-3">
     <input class="form-control" v-model="searchData" type="text" placeholder="Buscar...">
@@ -543,6 +548,15 @@ const deleteUser = async (id) => {
   }
 };
 
+// import { useRouter } from 'vue-router';
+import VueCookies from 'vue-cookies';
+
+// const router = useRouter();
+
+const logout = () => {
+  VueCookies.remove('userAuthenticated');
+  router.push({ name: 'login' });
+};
 
 </script>
 
