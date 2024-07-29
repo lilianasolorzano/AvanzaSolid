@@ -1,5 +1,12 @@
 <template>
-  <h1>formulario Agregar usuario</h1>
+  <div class="header">
+    <button type="submit" class="btn-cancel" @click="cancel">Cancelar</button> 
+    <h1> Agregar usuario</h1>
+  </div>
+  <div class="searchFor1">
+
+  <form @submit.prevent="updateUser" class="formAdd">
+
   <div class="mb-3 row">
     <label class="col-sm-2 col-form-label">Id</label>
     <div class="col-sm-10">
@@ -32,8 +39,10 @@
     </div>
   </div>
 
-  <BtnGlobal btn_global="Guardar" @click="saveDataFire" class="btn btn-primary" />
 
+  <BtnGlobal btn_global="Guardar" @click="saveDataFire" class="btn" />
+</form>
+</div>
 </template>
 
 <script setup>
@@ -86,4 +95,53 @@ const saveDataFire = async () => {
     console.error('error al momento de guardar los datos:', error)
   }
 };
+const cancel = () => {
+  router.back()
+}
+
 </script>
+<style scoped>
+.header {
+  display: flex;
+}
+.btn-cancel{
+/* padding: 5px; */
+background-color: #20c3a8;
+width: 70px;
+height: 40px;
+border-radius: 10px;
+margin-top: 25px;
+color: white;
+margin-left: 30px;
+}
+.formAdd{
+  padding: 10px;
+  align-items: center;
+  align-content: center;
+  /* margin: 30px; */
+  border: 3px solid #20c3a8;
+  padding: 20px;
+}
+h1{
+  margin-top: 20px;
+  color: #20c3a8;
+  margin-left: 40px;
+}
+.btn{
+color: white;
+background: #20c3a8 ;
+border-radius: 10px;
+border: #20c3a8 solid 1px;
+align-content: center;
+align-items: center;
+margin-top: 10px;
+margin-left: 40%;
+margin-bottom: 20px;
+}
+.searchFor1{
+ margin-left: 30px;
+ margin-top: 30px;
+width: 50%;
+
+}
+</style>

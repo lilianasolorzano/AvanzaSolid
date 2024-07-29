@@ -1,18 +1,35 @@
 <template>
-  <h1>Tabla de datos</h1>
-  <BtnGlobal btn_global="Agregar usuario" @click="add" class="btn btn-primary" />
-  <div class="input-group mb-3">
-      <input class="form-control" v-model="searchData" type="text" placeholder="Buscar...">
-      <button @click="filterDatas" class="btn btn-primary">Buscar</button>
+  <div >
+    <div class="header">
+      <div class="btns">
+        <button @click="logout" class="btn btn-danger">Cerrar Sesión</button>
+      </div>
+        
+      <h1>Datos de Usuario</h1>
+  
+    </div>
   </div>
+  <!-- <BtnGlobal btn_global="Agregar usuario" @click="add" class="btn btn-primary" /> -->
+   <div class="search2">
+     <BtnGlobal btn_global="Agregar usuario" @click="addUser" class="btn btn-primary"/>
+     <div class="search">
+       <div class="input-group mb-1">
+           <input class="form-control" v-model="searchData" type="text" placeholder="Buscar...">
+           <button @click="filterDatas" class="btn btn-primary">Buscar</button>
+       </div>
+     </div>
+   </div>
 
-  <div class="input-group mb-3">
-    <input class="form-control" v-model="searchId" type="text" placeholder="Buscar por ID">
-    <input class="form-control" v-model="searchName" type="text" placeholder="Buscar por Nombre">
-    <input class="form-control" v-model="searchUsername" type="text" placeholder="Buscar por Nombre de usuario">
-    <input class="form-control" v-model="searchEmail" type="text" placeholder="Buscar por Correo">
-    <div class="input-group-append">
-        <button @click="filterData" class="btn btn-primary">Buscar</button>
+   <div class="searchFor1">
+
+     <div class="input-group">
+       <input class="form-control" v-model="searchId" type="text" placeholder="Buscar por ID">
+       <input class="form-control" v-model="searchName" type="text" placeholder="Buscar por Nombre">
+       <input class="form-control" v-model="searchUsername" type="text" placeholder="Buscar por Nombre de usuario">
+       <input class="form-control" v-model="searchEmail" type="text" placeholder="Buscar por Correo">
+       <div class="input-group-append">
+         <button @click="filterData" class="btn btn-primary">Buscar</button>
+        </div>
       </div>
     </div>
   
@@ -75,11 +92,11 @@ const searchUsername = ref('');
 const searchEmail = ref('');
 const filteredData = ref([]);
 const currentPage = ref(1);
-const itemsPerPage = ref(10);
+const itemsPerPage = ref(8);
 const users = ref([]);
 const userStore = useUserStore();
 
-const add = () => {
+const addUser = () => {
   router.push({ name: 'addUsers' });
 };
 
@@ -174,27 +191,92 @@ const editUser = (user) => {
   router.push({ name: 'update' });
 };
 
-
-// const deleteUser = async (id) => {
+// const deleteUser = async (docId) => {
 //   if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-//     await userStore.deleteUser(id);
-//     filterData();
+//     try {
+//       await deleteDoc(doc(db, "usuarios", docId));
+//       getDataFirebase();
+//     } catch (error) {
+//       console.error('Error al eliminar el usuario:', error);
+//     }
 //   }
+
 // };
+
 const deleteUser = async (id) => {
-  // await deleteDoc(doc(db, 'usuarios', id));
-  if (confirm(`¿Estás seguro de que deseas eliminar este usuario? ${id}`)) {
-    await userStore.deleteUser(id);
-    filterData();
+  if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+
+    const querySnapshot = await getDocs(collection(db, 'usuarios'));
+    console.log("Documentos obtenidos:", querySnapshot.docs.map(doc => doc.id));
+
+    // Encontrar el documento que contiene el ID interno del usuario
+    const userDoc = querySnapshot.docs.find(doc => doc.data().id === id);
+    console.log("userDocs", userDoc)
+
+    try {
+      await deleteDoc(doc(db, 'usuarios', userDoc.id));
+      getDataFirebase();
+      console.log("deleteDocs: ", userDoc.id)
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
   }
 };
 
+// import { useRouter } from 'vue-router';
+import VueCookies from 'vue-cookies';
+
+// const router = useRouter();
+
+const logout = () => {
+  VueCookies.remove('userAuthenticated');
+  router.push({ name: 'login' });
+};
 
 
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  align-items: center;
+  align-content: center; 
+  gap: 20px; 
+  margin-bottom: 50px;
+  background-color: #20c3a8;
+  height: 70px;
+}
+h1{
+color: white;
+align-items: center;
+text-align: center;
+margin-left: 300px;
+}
 .tableData {
-  border: solid 4px black;
+  /* border: solid 4px black;  */
+  margin: 20px;
+  
+}
+.btns{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px
+}
+.btn{
+  margin-left: 10px;
+}
+.search{
+width: 50%;
+margin-left: 470px;
+}
+.search2{
+display: flex;
+margin-bottom: 20px;
+}
+.searchFor1{
+ margin-left: 30px;
+ margin-top: 30px;
+  width: 95%;
+
 }
 </style>

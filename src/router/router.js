@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+// import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import login from "../components/login.vue";
+import VueCookies from "vue-cookies";
+// import { reload } from "firebase/auth";
+
+
 
 const routes = [
   {
@@ -11,20 +15,23 @@ const routes = [
   {
     path: "/users",
     name: "users",
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     component: () => import("../components/users.vue"),
+    meta: { requiresAuth: true},
   },
   {
     path: "/addUsers",
     name: "addUsers",
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     component: () => import("../components/addUsers.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/update",
     name: "update",
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     component: () => import("../components/update.vue"),
+    meta: { requiresAuth: true },
   },
 ];
 const router = createRouter({
@@ -32,18 +39,20 @@ const router = createRouter({
   routes,
 });
 
-// Guardias de navegación para verificar autenticación
 router.beforeEach((to, from, next) => {
-  const auth = getAuth();
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  // Verificar si la cookie de autenticación está presente
+  const userAuthenticated = VueCookies.get("userAuthenticated");
 
-  onAuthStateChanged(auth, user => {
-    if (requiresAuth && !user) {
-      next('/login');
-    } else {
-      next();
-    }
-  });
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !userAuthenticated
+  ) {
+    next({ name: "login" });
+  } else if (to.name === "login" && userAuthenticated) {
+    next({ name: "users" });
+  } else {
+    next();
+  }
 });
 
 export default router;
