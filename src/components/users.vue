@@ -511,16 +511,36 @@ const editUser = (user) => {
   router.push({ name: 'update' });
 };
 
+// const deleteUser = async (docId) => {
+//   if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+//     try {
+//       await deleteDoc(doc(db, "usuarios", docId));
+//       getDataFirebase();
+//     } catch (error) {
+//       console.error('Error al eliminar el usuario:', error);
+//     }
+//   }
+
+// };
+
 const deleteUser = async (id) => {
   if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+
+    const querySnapshot = await getDocs(collection(db, 'usuarios'));
+    console.log("Documentos obtenidos:", querySnapshot.docs.map(doc => doc.id));
+
+    // Encontrar el documento que contiene el ID interno del usuario
+    const userDoc = querySnapshot.docs.find(doc => doc.data().id === id);
+    console.log("userDocs", userDoc)
+
     try {
-      await deleteDoc(doc(db, "usuarios", id));
+      await deleteDoc(doc(db, 'usuarios', userDoc.id));
       getDataFirebase();
+      console.log("deleteDocs: ", userDoc.id)
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
     }
   }
-
 };
 
 
