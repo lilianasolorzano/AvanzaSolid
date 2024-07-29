@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <script setup lang="js">
@@ -8,17 +8,20 @@
 import { collection, getDocs, addDoc } from "firebase/firestore";
 // import { getFirestore, collection, getDocs } from 'firebase/firestore';
 // // importacion de la base de datos
-import db from "@/firebase/firebaseConfig";
+import { db } from "@/firebase/firebaseConfig";
 // import axios from 'axios';
 
 
-const obtenerDatos = async() => {
-  const datos = await getDocs (collection(db, 'usuarios'))
-datos.forEach((documento)=> {
-  console.log(documento.data());
-})
-
-
+const obtenerDatos = async () => {
+  try {
+    const datos = await getDocs(collection(db, 'usuarios'))
+    datos.forEach((documento) => {
+      console.log(documento.data());
+    })
+  }
+  catch (error) {
+    console.error('Error al obtener los datos:', error);
+  }
 };
 obtenerDatos()
 
@@ -42,9 +45,8 @@ obtenerDatos()
 //   }
 // };
 
-// Ejecutar la función cuando el componente se monta
+// // Ejecutar la función cuando el componente se monta
 // importData();
 
 </script>
-<style>
-</style>
+<style></style>
