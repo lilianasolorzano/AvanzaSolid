@@ -65,8 +65,6 @@ const firebaseConfig = {
             └── d1f0b8f919ced3799afd41ebc4a4bb5d.jpg
             └── d83a8989cc5a955358a8bf95aa12ba34.jpg
         └── login.vue
-        └── 📁probandoelbtn
-        └── update copy.vue
         └── update.vue
         └── users.vue
     └── 📁firebase
@@ -78,7 +76,6 @@ const firebaseConfig = {
     └── 📁router
         └── router.js
     └── 📁store
-        └── counter.js
         └── userStore.js
 ```
 # Componentes
