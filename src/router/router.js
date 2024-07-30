@@ -15,21 +15,18 @@ const routes = [
   {
     path: "/users",
     name: "users",
-    // meta: { requiresAuth: true },
     component: () => import("../components/users.vue"),
     meta: { requiresAuth: true},
   },
   {
     path: "/addUsers",
     name: "addUsers",
-    // meta: { requiresAuth: true },
     component: () => import("../components/addUsers.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/update",
     name: "update",
-    // meta: { requiresAuth: true },
     component: () => import("../components/update.vue"),
     meta: { requiresAuth: true },
   },

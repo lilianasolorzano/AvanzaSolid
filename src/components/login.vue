@@ -61,17 +61,15 @@ const login = async () => {
     const querySnapshot = await getDocs(userQuery);
 
     if (!querySnapshot.empty) {
-      // Usuario encontrado
+      // poder encontrar el usuario
       const user = querySnapshot.docs[0].data();
       console.log('Usuario autenticado:', user);
 
       // Guardar el estado de autenticación en una cookie
-      VueCookies.set('userAuthenticated', true, '1h'); // La cookie expira en 1 hora
+      VueCookies.set('userAuthenticated', true, '1h'); // 1h indicacion de que expira en 1 hora
 
-      // Redirigir a la página de datos
       router.push({ name: 'users' });
     } else {
-      // Usuario no encontrado
       error.value = 'Correo o contraseña incorrectos';
     }
   } catch (err) {

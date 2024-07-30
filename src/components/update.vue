@@ -53,7 +53,6 @@ const updateUser = async () => {
   try {
     console.log("Actualizando usuario con ID interno:", user.value.id);
 
-    // Obtener todos los documentos de la colección 'usuarios'
     const querySnapshot = await getDocs(collection(db, 'usuarios'));
     console.log("Documentos obtenidos:", querySnapshot.docs.map(doc => doc.id));
 
@@ -62,15 +61,13 @@ const updateUser = async () => {
     console.log("Documento del usuario encontrado:", userDoc);
 
     if (userDoc) {
-      // Actualizar el documento del usuario
       await updateDoc(doc(db, 'usuarios', userDoc.id), {
         email: user.value.email,
         name: user.value.name,
         username: user.value.username,
         password: user.value.password,
       });
-
-      // alert('Usuario actualizado con éxito');
+      
       userStore.clearSelectedUser();
       router.push({ name: 'users' });
     } else {
